@@ -71,7 +71,7 @@ def init_distributed_mode(args, make_communication_groups=True):
     #                         world_size=args.world_size, rank=args.rank)
 
 
-    dist.init_process_group(backend='nccl', init_method="file:///home/vlad/file",
+    dist.init_process_group(backend='nccl', init_method="file:///home/meitarr/file",
                             world_size=args.world_size, rank=args.rank)
 
     # set cuda device
@@ -255,7 +255,7 @@ def restart_from_checkpoint(args, ckp_path=None, run_variables=None, **kwargs):
                 run_variables[var_name] = checkpoint[var_name]
 
 
-def fix_random_seeds(seed=1993):
+def fix_random_seeds(seed=2000):
     """
     Fix random seeds.
     """
@@ -351,8 +351,11 @@ def normalize(data):
 
 def compute_M(data):
     cols = np.arange(data.size)
+    print(data)
+    print(cols)
+    print(data.max())
     return csr_matrix((cols, (data.ravel(), cols)),
-                      shape=(data.max() + 1, data.size))
+             shape=(data.max() + 1, data.size))
 
 def get_indices_sparse(data):
     M = compute_M(data)

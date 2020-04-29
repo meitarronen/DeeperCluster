@@ -39,10 +39,8 @@ class YFCC100M_dataset(data.Dataset):
         self.sub_classes = None
 
         # remove data with uniform color and data we didn't manage to download
-        self.indexes = self._get_images_paths(max_imgs)
+        self.indexes = self._get_images_paths(max_imgs) # path of all images
 
-        if max_imgs is not None:
-            self.indexes = self.indexes[:max_imgs]
         # for subsets
         self.subset_indexes = None
 
@@ -53,6 +51,7 @@ class YFCC100M_dataset(data.Dataset):
 
         # load the image
         img = Image.open(self.indexes[index])
+        img = img.convert('RGB') #added this
 
         # apply transformation
         if self.transform is not None:
