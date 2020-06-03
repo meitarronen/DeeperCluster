@@ -19,7 +19,9 @@ import torch.utils.data as data
 class VOC2007_dataset(data.Dataset):
     def __init__(self, voc_dir, split='train', transform=None):
         # Find the image sets
-        image_set_dir = os.path.join(voc_dir, 'ImageSets', 'Main')
+        if split == 'trainval':
+            split = 'train'
+        image_set_dir = os.path.join(voc_dir, split, 'ImageSets', 'Main')
         image_sets = glob.glob(os.path.join(image_set_dir, '*_' + split + '.txt'))
         assert len(image_sets) == 20
         # Read the labels
@@ -34,7 +36,7 @@ class VOC2007_dataset(data.Dataset):
                     lbl = 0
                 elif lbl == 0:
                     lbl = 255
-                images[os.path.join(voc_dir, 'JPEGImages', name + '.jpg')][k] = lbl
+                images[os.path.join(voc_dir, split, 'JPEGImages', name + '.jpg')][k] = lbl
         self.images = [(k, images[k]) for k in images.keys()]
         np.random.shuffle(self.images)
         self.transform = transform
